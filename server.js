@@ -41,15 +41,13 @@ app.get("/scrape", function(req, res) {
                 .children("p")
                 .text();
 
-            console.log("-------------");
-            console.log(pubDate);
             articles.push({
                 title: title,
                 link: link,
                 description: description
             });
         });
-
+        db.Article.insertMany(articles);
         res.json(articles);
     });
 });

@@ -5,15 +5,15 @@ const cheerio = require("cheerio");
 var db = require("../models");
 
 module.exports = function(app) {
+    //route that displays all the new stories
     app.get("/all", function(req, res) {
-        db.Article.find({}, function(err, articles) {
-            if (err) {
-                res.json(err);
-            }
-            res.json(articles);
-        });
+        db.Article.find({})
+            .populate("comments")
+            .then(function(articles) {
+                res.json(articles);
+            });
     });
-
+    //scrapes the news stories
     app.get("/scrape", function(req, res) {
         axios.get("https://weeklyworldnews.com/").then(function(response) {
             const $ = cheerio.load(response.data);
@@ -42,5 +42,22 @@ module.exports = function(app) {
             db.Article.insertMany(articles);
             res.json("Web site scraped database updated");
         });
+    });
+
+    // adds a new comment
+    app.post("/comment", function(req, res) {
+        //save the comment to the database
+        console.log(req.body);
+        const text = req.body.text;
+        const user = req.body.user;
+        console.log(text, user);
+        db.Comment.create({ text: text, user: user })
+            .then(function(results) {
+                console.log(results);
+                return db.Article.findOneAndUpdate({ _id: req.body.articleID }, { $push: { comments: results._id } }, { new: true });
+            })
+            .catch(function(err) {
+                console.log(err);
+            });
     });
 };

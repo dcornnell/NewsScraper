@@ -19,7 +19,17 @@ $(document).ready(function() {
     });
 
     $(document).on("click", ".comment", function() {
-        console.log($(`textarea#${$(this).attr("data")}`).val());
-        console.log($(this).attr("data"));
+        const comment = {};
+        comment.user = "guest";
+        comment.text = $(`textarea#${$(this).attr("data")}`).val();
+        comment.articleID = $(this).attr("data");
+        console.log(comment);
+        $.ajax({
+            url: "/comment",
+            method: "POST",
+            data: comment
+        }).then(function(response) {
+            console.log(response);
+        });
     });
 });

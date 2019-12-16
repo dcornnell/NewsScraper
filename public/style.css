@@ -1,0 +1,15 @@
+.comment-count {
+    float: right;
+}
+
+.comments {
+    display: none;
+}
+
+.show {
+    display: unset;
+}
+
+.hide {
+    display: none;
+}

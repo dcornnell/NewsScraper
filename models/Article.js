@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 
 const ArticleSchema = new Schema({
     title: {
-        type: String
+        type: String,
+        unique: true
     },
 
     link: {
@@ -17,7 +18,9 @@ const ArticleSchema = new Schema({
     comments: [{
         type: Schema.Types.ObjectId,
         ref: "Comment"
-    }]
+    }],
+
+    created_at: { type: Date, default: Date.now }
 });
 
 const Article = mongoose.model("Article", ArticleSchema);

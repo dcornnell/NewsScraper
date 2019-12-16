@@ -1,5 +1,6 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
+const moment = require("moment");
 
 //Link to the models
 var db = require("../models");
@@ -10,6 +11,9 @@ module.exports = function(app) {
         db.Article.find({})
             .populate("comments")
             .then(function(articles) {
+                console.log(moment(articles[0].created_at).format("MMM Do YY"));
+                formatDate(articles);
+
                 res.json(articles);
             });
     });
@@ -47,7 +51,7 @@ module.exports = function(app) {
     // adds a new comment
     app.post("/comment", function(req, res) {
         //save the comment to the database
-        console.log(req.body);
+
         const text = req.body.text;
         const user = req.body.user;
         console.log(text, user);
@@ -60,4 +64,20 @@ module.exports = function(app) {
                 console.log(err);
             });
     });
+
+    // route for deleting comments
+    app.delete("/delete", function(req, res) {
+        db.Comment.deleteOne({ _id: req.body.id }, function(err) {
+            if (err) return res.json(err);
+
+            res.json("success");
+        });
+    });
 };
+
+function formatDate(articles) {
+    for (let i = 0; i < articles.length; i++) {
+        articles[i] = articles[i].toObject();
+        articles[i].created_at = moment(articles[i].created_at).format("MMM Do YY");
+    }
+}

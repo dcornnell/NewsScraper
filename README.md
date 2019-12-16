@@ -2,7 +2,7 @@
 
 ## Link to the app
 
-[https://weeklyworldscraper.herokuapp.com/](click here)
+[click here](https://weeklyworldscraper.herokuapp.com/)
 
 ## Description
 

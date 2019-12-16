@@ -13,7 +13,11 @@ app.use(express.json());
 app.use(express.static("public"));
 
 //connect to the MongoDB
-mongoose.connect("mongodb://localhost/newsscraper", {
+
+// If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsscraper";
+
+mongoose.connect(MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });

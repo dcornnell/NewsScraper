@@ -11,7 +11,6 @@ module.exports = function(app) {
         db.Article.find({})
             .populate("comments")
             .then(function(articles) {
-                console.log(moment(articles[0].created_at).format("MMM Do YY"));
                 formatDate(articles);
 
                 res.json(articles);
@@ -44,6 +43,7 @@ module.exports = function(app) {
                 });
             });
             db.Article.insertMany(articles);
+
             res.json("Web site scraped database updated");
         });
     });

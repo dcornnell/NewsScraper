@@ -42,7 +42,9 @@ $(document).ready(function() {
 function displayStories() {
     $.get("/all").then(function(data) {
         data.forEach(function(article) {
-            const item = `<div class="callout"><h5>${article.title}</h5>
+            const item = `<div class="callout"><h5>${
+        article.title
+      }<span class="date">${article.created_at}</span></h5>
                 <p>${article.description}</p>
                 <a href="${
                   article.link

@@ -37,6 +37,16 @@ $(document).ready(function() {
         });
         window.location.reload();
     });
+
+    $("#scrape").on("click", function() {
+        $.ajax({
+            url: "/scrape",
+            method: "GET"
+        }).then(function(response) {
+            console.log(response);
+            window.location.reload();
+        });
+    });
 });
 
 function displayStories() {

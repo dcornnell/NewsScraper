@@ -9,6 +9,7 @@ module.exports = function(app) {
     //route that displays all the new stories
     app.get("/all", function(req, res) {
         db.Article.find({})
+            .sort({ _id: -1 })
             .populate("comments")
             .then(function(articles) {
                 formatDate(articles);
@@ -44,7 +45,7 @@ module.exports = function(app) {
             });
             db.Article.insertMany(articles, { ordered: false });
 
-            res.json("Web site scraped database updated");
+            res.json("Web site scraped, database updated");
         });
     });
 

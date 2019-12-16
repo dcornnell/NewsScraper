@@ -6,10 +6,12 @@ const moment = require("moment");
 var db = require("../models");
 
 module.exports = function(app) {
-    //route that displays all the new stories
+    //route that displays all the news stories
     app.get("/all", function(req, res) {
         db.Article.find({})
+            // shows newer stories first
             .sort({ _id: -1 })
+            // adds the comments
             .populate("comments")
             .then(function(articles) {
                 formatDate(articles);
@@ -43,6 +45,7 @@ module.exports = function(app) {
                     description: description
                 });
             });
+            //insert the articles into the database, the {ordered: false} is used to prevent errors from stopping the inserts
             db.Article.insertMany(articles, { ordered: false });
 
             res.json("Web site scraped, database updated");
@@ -58,7 +61,7 @@ module.exports = function(app) {
         console.log(text, user);
         db.Comment.create({ text: text, user: user })
             .then(function(results) {
-                console.log(results);
+                //adds the comment to the proper article
                 return db.Article.findOneAndUpdate({ _id: req.body.articleID }, { $push: { comments: results._id } }, { new: true });
             })
             .catch(function(err) {
@@ -75,7 +78,7 @@ module.exports = function(app) {
         });
     });
 };
-
+//function for formatting the date into a more user friendly format
 function formatDate(articles) {
     for (let i = 0; i < articles.length; i++) {
         articles[i] = articles[i].toObject();

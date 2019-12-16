@@ -73,7 +73,10 @@ function addComments(array, id) {
         output += `<div class=callout small">
                         <h6> ${item.user} said:</h6>
                             <p> ${item.text} </p>
-                        <div class="delete-comment" data="${item._id}">delete</div>
+                        
+                         <button class="close-button delete-comment" aria-label="Close alert" type="button" data-close data="${item._id}">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
                     </div>`;
     });
     output += "</div>";

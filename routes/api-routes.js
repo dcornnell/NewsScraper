@@ -42,7 +42,7 @@ module.exports = function(app) {
                     description: description
                 });
             });
-            db.Article.insertMany(articles);
+            db.Article.insertMany(articles, { ordered: false });
 
             res.json("Web site scraped database updated");
         });

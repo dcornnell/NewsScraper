@@ -17,3 +17,7 @@
 .date {
     float: right;
 }
+
+.delete-comment {
+    position: absolute;
+}

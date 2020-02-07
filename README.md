@@ -1,12 +1,14 @@
-# NewsScraper
+# Weekly World Scrape
 
 ## Link to the app
 
-[https://weeklyworldscraper.herokuapp.com/](click here)
+[click here](https://weeklyworldscraper.herokuapp.com/)
 
 ## Description
 
 A news scrapper that gets the top stories from [https://weeklyworldnews.com/](https://weeklyworldnews.com/). users can add comments to the news stories.
+
+![weekly work scraper](https://dcornnell.github.io/Portfolio-2019/assets/images//wwscrape.png)
 
 ## Purpose
 

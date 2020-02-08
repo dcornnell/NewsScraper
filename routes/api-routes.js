@@ -1,6 +1,8 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
 const moment = require("moment");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 //Link to the models
 var db = require("../models");
@@ -51,7 +53,7 @@ module.exports = function(app) {
       res.json("Web site scraped, database updated");
     });
   });
-
+  // user signup
   app.post("/signup", function(req, res) {
     db.User.create(req.body)
       .then(function(result) {
@@ -61,6 +63,27 @@ module.exports = function(app) {
         res.status(500).json({ error: err.message });
       });
   });
+
+  // user authentication
+  app.post("/login", function(req, res) {
+    const { username, password } = req.body;
+    db.User.findOne({ username: username }).then(function(dbUser) {
+      if (!dbUser) return res.status(401).json({ message: "user not found!" });
+      if (dbUser.comparePassword(password)) {
+        const token = jwt.sign(
+          {
+            data: dbUser._id
+          },
+          process.env.JWT_KEY
+        );
+        console.log(dbUser);
+        res.json({ id: dbUser._id, username: dbUser.username, token: token });
+      } else {
+        res.status(401).json({ message: "Username or pasword is incorret" });
+      }
+    });
+  });
+
   // adds a new comment
   app.post("/comment", function(req, res) {
     //save the comment to the database

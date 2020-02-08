@@ -61,6 +61,20 @@ $(document).ready(function() {
       window.location.replace("/");
     });
   });
+
+  $("#login").on("click", function() {
+    event.preventDefault();
+    const userName = $("#userName").val();
+    const password = $("#password").val();
+    $.ajax({
+      url: "/login",
+      method: "POST",
+      data: { username: userName, password: password }
+    }).then(function(response) {
+      localStorage.setItem("token", response.token);
+      window.location.replace("/");
+    });
+  });
 });
 
 function displayStories() {

@@ -17,7 +17,7 @@ UserSchema.methods.comparePassword = function(inputPass) {
 
 UserSchema.pre("save", function(next) {
   if (!this.isModified("password")) return next();
-  this.password = bcrypt.hash(this.password, 10);
+  this.password = bcrypt.hashSync(this.password, 10);
   return next();
 });
 

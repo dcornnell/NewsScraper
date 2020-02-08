@@ -1,23 +1,27 @@
 .comment-count {
-    float: right;
+  float: right;
 }
 
 .comments {
-    display: none;
+  display: none;
 }
 
 .show {
-    display: unset;
+  display: unset;
 }
 
 .hide {
-    display: none;
+  display: none;
 }
 
 .date {
-    float: right;
+  float: right;
 }
 
 .delete-comment {
-    position: absolute;
+  position: absolute;
+}
+
+#signup {
+  margin: 20px 10%;
 }

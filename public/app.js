@@ -1,58 +1,72 @@
 $(document).ready(function() {
-    $(document).foundation();
+  $(document).foundation();
 
-    displayStories();
+  displayStories();
 
-    $(document).on("click", ".comment", function() {
-        const comment = {};
-        comment.user = "guest";
-        comment.text = $(`textarea#${$(this).attr("data")}`).val();
-        comment.articleID = $(this).attr("data");
-        console.log(comment);
-        $.ajax({
-            url: "/comment",
-            method: "POST",
-            data: comment
-        }).then(function(response) {
-            console.log(response);
-        });
-        window.location.reload();
+  $(document).on("click", ".comment", function() {
+    const comment = {};
+    comment.user = "guest";
+    comment.text = $(`textarea#${$(this).attr("data")}`).val();
+    comment.articleID = $(this).attr("data");
+    console.log(comment);
+    $.ajax({
+      url: "/comment",
+      method: "POST",
+      data: comment
+    }).then(function(response) {
+      console.log(response);
     });
+    window.location.reload();
+  });
 
-    $(document).on("click", ".show-comments", function() {
-        const articleID = $(this).attr("data");
+  $(document).on("click", ".show-comments", function() {
+    const articleID = $(this).attr("data");
 
-        $(`.comments[data="${articleID}"`).toggle();
+    $(`.comments[data="${articleID}"`).toggle();
+  });
+
+  $(document).on("click", ".delete-comment", function() {
+    const commentID = $(this).attr("data");
+
+    $.ajax({
+      url: "/delete",
+      method: "DELETE",
+      data: { id: commentID }
+    }).then(function(response) {
+      console.log(response);
     });
+    window.location.reload();
+  });
 
-    $(document).on("click", ".delete-comment", function() {
-        const commentID = $(this).attr("data");
-
-        $.ajax({
-            url: "/delete",
-            method: "DELETE",
-            data: { id: commentID }
-        }).then(function(response) {
-            console.log(response);
-        });
-        window.location.reload();
+  $("#scrape").on("click", function() {
+    $.ajax({
+      url: "/scrape",
+      method: "GET"
+    }).then(function(response) {
+      console.log(response);
+      window.location.reload();
     });
+  });
 
-    $("#scrape").on("click", function() {
-        $.ajax({
-            url: "/scrape",
-            method: "GET"
-        }).then(function(response) {
-            console.log(response);
-            window.location.reload();
-        });
+  $("#createUser").on("click", function() {
+    event.preventDefault();
+    const userName = $("#userName").val();
+    const password = $("#password").val();
+    $.ajax({
+      url: "/signup",
+      method: "POST",
+      data: { username: userName, password: password }
+    }).then(function(response) {
+      console.log(response);
+      window.location.replace("/");
     });
+  });
 });
 
 function displayStories() {
-    $.get("/all").then(function(data) {
-        data.forEach(function(article) {
-            const item = `<div class="callout"><h5>${
+  $.get("/all").then(function(data) {
+    data.forEach(function(article) {
+      const item = `<div class="callout"><h5>${
         article.title
       }<span class="date">${article.created_at}</span></h5>
                 <p>${article.description}</p>
@@ -70,17 +84,17 @@ function displayStories() {
                 </div>
                 </div>`;
 
-            $("#content").append(item);
-        });
+      $("#content").append(item);
     });
+  });
 }
 
 function addComments(array, id) {
-    let output = `<div class="comments grid-container" data="${id}">
+  let output = `<div class="comments grid-container" data="${id}">
  
   `;
-    array.reverse().map(function(item) {
-        output += `<div class=callout small">
+  array.reverse().map(function(item) {
+    output += `<div class=callout small">
                         <h6> ${item.user} said:</h6>
                             <p> ${item.text} </p>
                         
@@ -88,8 +102,8 @@ function addComments(array, id) {
                             <span aria-hidden="true">&times;</span>
                           </button>
                     </div>`;
-    });
-    output += "</div>";
+  });
+  output += "</div>";
 
-    return output;
+  return output;
 }

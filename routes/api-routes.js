@@ -52,6 +52,15 @@ module.exports = function(app) {
     });
   });
 
+  app.post("/signup", function(req, res) {
+    db.User.create(req.body)
+      .then(function(result) {
+        res.json({ message: "user was created" });
+      })
+      .catch(function(err) {
+        res.status(500).json({ error: err.message });
+      });
+  });
   // adds a new comment
   app.post("/comment", function(req, res) {
     //save the comment to the database
